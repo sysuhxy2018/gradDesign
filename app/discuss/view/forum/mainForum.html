@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>学生作业管理系统</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script   src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="//twemoji.maxcdn.com/2/twemoji.min.js?2.5"></script>
+        <style>
+            img.emoji {
+               height: 1em;
+               width: 1em;
+               margin: 0 .05em 0 .1em;
+               vertical-align: -0.1em;
+            }
+            img.acfun{
+                width: 3em;
+                height: auto;
+                margin: 0 .05em 0 .1em;
+                vertical-align: text-bottom;
+            }
+            .exp-ac{
+                width:288px;
+            }
+            .exp-ac td{
+                height:48px;
+            }
+            .popover{
+                max-width: 500px;
+            }
+            .badge{
+                vertical-align: text-bottom;
+            }
+        </style>
+    </head>
+    <body class="bg-light">
+        <div class=" rounded-0 jumbotron mb-0 py-0 bg-dark">
+            <div class="container">
+                <nav class="navbar navbar-expand-md bg-dark navbar-dark px-0">
+                  <a class="navbar-brand" href="#">学生作业管理系统</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link" href="{:url('index/space/main')}">课程</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{:url('index/space/getinfo')}">信息</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{:url('index/index/logout')}">登出</a>
+                      </li>
+                    </ul>
+                  </div>  
+                </nav>
+            </div>
+        </div>
+        <div class="rounded-0 jumbotron mb-0 bg-white">
+            <div id="mainBox" name="mainBox" class="container">
+                <h1 class="display-4">讨论组</h1>
+                <div class="table-responsive">
+                    <table id="mainTopics" class="table table-striped table-hover mb-5"
+                           style="min-width: 800px;overflow: auto;">
+                        <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th class="text-center">信息</th>
+                                <th class="text-center">回复</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {volist name='list' id='topics'}
+                        <tr>
+                            <td><div><a class="d-inline-block text-truncate" style="max-width: 30rem;" href="{:url('discuss/forum/getreplys',['aid'=>$topics.id])}">{$topics.title}</a></div></td>
+                            <td class="text-center" style="width:200px;">
+                                <div>
+                                    <div>
+                                        <input type="hidden" value="{$topics.uid}">
+                                        <input type="hidden" value="{$topics.urole}">
+                                        {$topics.urole==0?'<span class="badge badge-success">学生</span>':''}{$topics.urole==1?'<span class="badge badge-primary">教师</span>':''}{$topics.urole==2?'<span class="badge badge-danger">管理员</span>':''}&nbsp;{$topics.uname}
+                                    </div>
+                                    <div class="text-secondary">{$topics.stamp}</div>
+                                </div>
+                            </td>
+                            <td class="text-center" style="width:100px;">
+                                <div>{$topics.layers_count>=1000?'999+':$topics.layers_count}</div>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    {$list|raw}
+                </div>
+                <hr class="my-3">
+                <div class="mx-auto" style="overflow:auto;">
+                    <div class="form-group">
+                        <label class="form-label">标题</label><input class="title form-control" type="text" name="title" style="min-width:800px;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">内容</label>
+                        <div class="exp-menu form-control bg-light" style="min-width:800px;height:45px;border-bottom-left-radius:0;border-bottom-right-radius:0;">
+                            <button class="pop-exp btn btn-primary btn-sm" data-container="body" data-toggle="popover" data-placement="bottom">表情</button>
+                            <button class="pop-img btn btn-primary btn-sm ml-1" data-container="body" data-toggle="popover" data-placement="bottom">图片</button>
+                        </div>
+                        <div class="res form-control border-top-0"  contenteditable style="min-width:800px;height:400px;overflow:auto;border-top-left-radius:0;border-top-right-radius: 0;"></div>
+                    </div>
+                    <button id="submit" class="btn btn-outline-primary">提交</button>
+                </div>
+            </div>
+        </div>
+        <hr class="my-0">
+        <div class="rounded-0 mb-0 jumbotron bg-light">
+            <div class="container">
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a>Github</a></li>
+                    <li class="list-inline-item"><a>文档</a></li>
+                    <li class="list-inline-item"><a>关于</a></li>
+                </ul>
+                <p class="mb-0">Designed and built by hxy.</p>
+                <p>Version 1.0.0.</p>
+            </div>
+        </div>
+        <script>
+            //反转义字符串
+            function spdecode(str){  
+                 var s = "";
+                 if(str.length == 0) return "";
+                 s = str.replace(/&amp;/g,"&");
+                 s = s.replace(/&lt;/g,"<");
+                 s = s.replace(/&gt;/g,">");
+                 s = s.replace(/&nbsp;/g," ");
+                 s = s.replace(/&#39;/g,"'");
+                 s = s.replace(/&quot;/g,"\"");
+                 return s;  
+            }
+            //去除经twemoji.js转换后img标签中alt属性值(emoji编码为utfmb4,数据库无法插入)
+            function reg4img(str){
+                var res;
+                res=str.replace(/(<\s*img\s+[^>]*?alt\s*=\s*)(\'|\")(.*?)\2([^>]*?\/?\s*>)/gi,
+                           "$1$2$2$4");
+                return res;
+            }
+            var popBodyExp,popBodyImg;
+            popBodyExp="<div class=\"exp-ac \"><div id=\"carouselExampleControls\" class=\"carousel slide\" data-ride=\"carousel\"><div class=\"carousel-inner\">"+
+                "{$exp}"+
+                "</div><a class=\"carousel-control-prev\" href=\"#carouselExampleControls\" role=\"button\" data-slide=\"prev\" style=\"width:auto;\"><span class=\"text-primary\">&laquo;</span><span class=\"sr-only\">Previous</span></a><a class=\"carousel-control-next\" href=\"#carouselExampleControls\" role=\"button\" data-slide=\"next\" style=\"width:auto;\"><span class=\"text-primary\">&raquo;</span><span class=\"sr-only\">Next</span></a></div></div></div>";
+            popBodyImg="<div class='insert-img input-group'><div class='custom-file'><input id='pics' class='custom-file-input' type='file' value=''><label class='custom-file-label' for='pics'>选择图片</label></div><div class='input-group-append'><button class='upload btn btn-outline-primary' type='button'>上传</button></div></div>";
+            popBodyExp=spdecode(popBodyExp);
+            $('.carousel').on('slid.bs.carousel', function () {
+                $(this).carousel('pause');
+            })
+            $(".pop-exp").attr("data-html",true);
+            $(".pop-exp").attr("data-content",popBodyExp);
+            $(".pop-img").attr("data-html",true);
+            $(".pop-img").attr("data-content",popBodyImg);
+            $(function () {
+              $('[data-toggle="popover"]').popover({});
+            });
+            //问题：没pop之前没有加载标签，所以会找不到对象
+            //方案：每次pop后再绑定点击事件，此时标签已经加载出来
+            $(".pop-exp").on("shown.bs.popover", function () {
+                $(".res").focus(function(){
+                     $(".pop-exp").popover("hide");
+                });
+                $(".acfun").bind("click",function(){
+                    document.execCommand("insertHTML", false, "<img class='acfun' src='"+
+                                   $(this).attr("src")+"'>");
+                    $(".pop-exp").popover("hide");
+                  });
+                //设置不自动播放(和点击事件一样需在pop后设置才有效)；
+                $(".carousel").carousel('pause');
+            });
+            $(".pop-img").on("shown.bs.popover", function(){
+               $(".res").focus(function(){
+                     $(".pop-img").popover("hide");
+                });
+               $(".upload").click(function(){
+                   var fdata=new FormData();
+                   var upFile=document.getElementById("pics").files[0];
+                   if(typeof(upFile)!="undefined"){
+                      fdata.append("pics",upFile);
+                       $.ajax({
+                           url:"{:url('discuss/forum/upimg')}",
+                           type:"POST",
+                           data:fdata,
+                           processData:false,
+                           contentType:false,
+                           dataType:"json",
+                           success:function(data){
+                               document.execCommand("insertHTML", false, "<img class='out_insert img-fluid' src='"+"/public/static/img/cache/"+data.fullname+"'>");
+                           },
+                           error:function(){
+                               alert("图片上传失败");
+                           }
+                       }); 
+                   }
+                  $(".pop-img").popover("hide");
+               });
+            });
+            $('[data-toggle="popover"]').click(function(){
+               $('[data-toggle="popover"]').not(this).popover("hide");
+            });
+            $("#submit").click(function(){
+               /*for emoji test😜 */;
+               var reply=reg4img(twemoji.parse($(".res").html()));
+               var title=$(".title").val();
+               if(title=="")
+                   alert("标题不能为空");
+               else if(reply=="")
+                   alert("内容不能为空");
+               else{
+                    var fdata=new FormData();
+                    fdata.append("title", title);
+                    fdata.append("reply", reply);
+                    $.ajax({
+                        url:"{:url('discuss/forum/posttopics',['fid'=>'201601004'])}",
+                        type:"POST",
+                        data:fdata,
+                        processData:false,
+                        contentType:false,
+                        dataType:"json",
+                        success:function(data){
+                            window.location.reload();
+                        },
+                        error:function(){
+                            alert("发帖失败");
+                        }
+                    });
+                }
+            });
+            //页码样式
+            $(".table-responsive>ul").attr("class", "pagination justify-content-center");
+            $(".table-responsive>ul li").addClass("page-item");
+            $(".table-responsive>ul span").attr("class", "page-link");
+            $(".table-responsive>ul a").attr("class", "page-link");
+        </script>
+    </body>
+</html>

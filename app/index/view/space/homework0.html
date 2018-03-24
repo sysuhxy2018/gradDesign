@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>学生作业管理系统</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <style></style>
+    </head>
+    <body class="bg-light">
+        <div class=" rounded-0 jumbotron mb-0 py-0 bg-dark">
+            <div class="container">
+                <nav class="navbar navbar-expand-md bg-dark navbar-dark px-0">
+                  <a class="navbar-brand" href="">学生作业管理系统</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link" href="{:url('index/space/main')}">课程</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{:url('index/space/getinfo')}">信息</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{:url('discuss/forum/gettopics', ['fid'=>$cid])}">讨论组</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{:url('index/index/logout')}">登出</a>
+                      </li>
+                    </ul>
+                  </div>  
+                </nav>
+            </div>
+        </div>
+        <div class="rounded-0 jumbotron mb-0 bg-white">
+            <div id="mainBox" name="mainBox" class="container">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">{$cid}</li>
+                  </ol>
+                </nav>
+                <h1 class="display-4">作业信息</h1>
+                <hr class="my-3">
+                <div class="table-responsive">
+                    <table id="mainHw" class="table table-bordered table-hover mb-5">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>开始时间</th>
+                                <th>截止时间</th>
+                                <th>作业内容</th>
+                                <th>上传</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {volist name='list' id='hw'}
+                        <tr>
+                            <td><a href="{:url('index/space/getscore', ['cid'=>$cid, 'sd'=>preg_replace('/[- :]/','',$hw.sd), 'tid'=>$tid])}">{$hw.sd}</a></td>
+                            <td>{$hw.ed}</td>
+                            <td>{$hw.info}</td>
+                            <td><button class="upload btn btn-outline-primary" data-toggle="modal" data-target="#hwModal">提交</button></td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    {$list|raw}
+                </div>
+            </div>
+        </div>
+        <hr class="my-0">
+        <div class="rounded-0 mb-0 jumbotron bg-light">
+            <div class="container">
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a>Github</a></li>
+                    <li class="list-inline-item"><a>文档</a></li>
+                    <li class="list-inline-item"><a>关于</a></li>
+                </ul>
+                <p class="mb-0">Designed and built by hxy.</p>
+                <p>Version 1.0.0.</p>
+            </div>
+        </div>
+        <div class="modal fade" id="hwModal" tabindex="-1" role="dialog" aria-labelledby="hwModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">作业布置</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">上传</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" name="homework" class="custom-file-input" lang="zh">
+                        <input class="tid" name="tid" type="hidden" value="{$tid}">
+                        <input class="cid" name="cid" type="hidden" value="{$cid}">
+                        <label class="custom-file-label">选择文件</label>
+                    </div>
+                  </div>
+                  <label>上传进度</label>
+                  <div class="form-group progress">
+                        <div id="percent" class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button id="submit" type="button" class="btn btn-primary">确认</button>
+                  <button id="cancel" type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript">
+            var focusItem;
+            var request;
+            var askProg;
+            var flag=false;
+            var result;
+            $(".upload").click(function(){
+                focusItem=$(this).parent().parent().children().first().children().html();
+                $(".custom-file-input").val("");   //重置选择的文件（名）
+                result="";
+            });
+            $("#cancel,.close").click(function(){
+                if(request){
+                    request.abort();
+                }
+                if(askProg){
+                    askProg.abort();
+                }
+            });
+            var btnSumit=document.getElementById("submit");
+            btnSumit.onclick=fileUpload;
+            function fileUpload(){
+                request=new XMLHttpRequest();
+                request.onreadystatechange=function(){
+                    if(request.readyState===4){
+                        if(request.status===200){
+                            flag=true;
+                            result=JSON.parse(request.responseText).msg;
+                        }
+                        else{
+                            alert("错误，文件可能上传失败。");
+                        }
+                    }
+                }
+                request.open("POST", "{:url('index/upload/sendhw')}", true);
+                var form=new FormData();
+                form.append("<?php echo ini_get('session.upload_progress.name'); ?>", "123");
+                form.append("tid", $(".tid").val());
+                form.append("cid", $(".cid").val());
+                form.append("startTime", focusItem);
+                form.append("homework", document.getElementsByName("homework")[0].files[0]);
+                request.send(form);
+                updateProg();
+            }
+            function updateProg(){
+                timeid=setTimeout(getProg, 100);    //大概0.1s更新一次
+            }
+            function getProg(){
+                askProg=new XMLHttpRequest();
+                askProg.onreadystatechange=function(){
+                    if(askProg.readyState===4){
+                        if(askProg.status===200){
+                            var prog=JSON.parse(askProg.responseText);
+                            percent.innerHTML=prog.rate+"%";
+                            $("#percent").attr("aria-valuenow", prog.rate);
+                            $("#percent").attr("style", "width:"+prog.rate+"%");
+                            if(flag){
+                                percent.innerHTML="100%";
+                                $("#percent").attr("aria-valuenow", "100");
+                                $("#percent").attr("style", "width:100%");
+                                clearTimeout(timeid);
+                                flag=false;
+                                //等待动画过渡以及document文字更新的时间
+                                setTimeout(function(){
+                                    alert(result);
+                                    window.location.reload();
+                                }, 600);
+                            }
+                            else{
+                                timeid=setTimeout(getProg, 100);
+                            }
+                        }
+                    }
+                }
+                askProg.open("GET", "{:url('index/upload/getprog')}", true);
+                askProg.send(null);
+            }
+            $(".table-responsive>ul").attr("class", "pagination justify-content-center");
+            $(".table-responsive>ul li").addClass("page-item");
+            $(".table-responsive>ul span").attr("class", "page-link");
+            $(".table-responsive>ul a").attr("class", "page-link");
+        </script>
+    </body>
+</html>
+

@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>欢迎</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <script   src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <style></style>
+    </head>
+    <body class="bg-light">
+        <div class=" rounded-0 jumbotron mb-0 py-0 bg-dark">
+            <div class="container">
+                <nav class="navbar navbar-expand-md bg-dark navbar-dark px-0">
+                  <a class="navbar-brand" href="">学生作业管理系统</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link" href="{:url('index/space/main')}">课程</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{:url('index/space/getinfo')}">信息</a>
+                      </li>
+                    </ul>
+                  </div>  
+                </nav>
+            </div>
+        </div>
+        <div class="rounded-0 jumbotron mb-0 bg-white">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-8 text-center">
+                        <blockquote class="blockquote">
+                          <p class="mb-0">子曰：“学而不思则罔，思而不学则殆。”</p>
+                          <footer class="blockquote-footer"><cite title="Source Title">《论语·为政》</cite></footer>
+                        </blockquote>
+                    </div>
+                    <!-- .d-none .d-sm-block -->
+                    <div class="col-md-4">
+                        <div class="rounded bg-dark text-white px-4 py-4">
+                            <form action="{:url('index/index/login')}" method="post">
+                                <div class="form-group">
+                                    <label class="form-label">类型</label>
+                                    <select name="userType" class="form-control">
+                                        <option value="student" selected>学生</option>
+                                        <option value="teacher">教师</option>
+                                        <option value="admin">管理员</option>
+                                    </select>
+                                </div>            
+                                <div class="form-group">
+                                    <label class="form-label">用户名</label>
+                                    <input name="userName" type="text" class="form-control">
+                                </div>         
+                                <div class="form-group">
+                                    <label class="form-label">密码</label>
+                                    <input name="userPwd" type="password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">验证码</label>
+                                    <input name="userCaptcha" type="text" class="form-control">
+                                </div>
+                                <div class="form-group"><img id="iframe" src="{:url('index/index/verify')}" class="d-block rounded img-fluid mx-auto" alt="captcha" title="点击刷新"/></div>
+                                <div class="form-group text-center">
+                                    <label class="form-label text-warning" id="hint" name="hint">{$hint}</label>
+                                    <input type="submit" value="登录" class="btn btn-primary btn-lg btn-block">
+                                </div>  
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="my-0">
+        <div class="rounded-0 mb-0 jumbotron bg-light">
+            <div class="container">
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a>Github</a></li>
+                    <li class="list-inline-item"><a>文档</a></li>
+                    <li class="list-inline-item"><a>关于</a></li>
+                </ul>
+                <p class="mb-0">Designed and built by hxy.</p>
+                <p>Version 1.0.0.</p>
+            </div>
+        </div>
+        <script>
+            //图片自刷新（其实除了iframe可以这么用外，img也可以）
+            $("#iframe").click(function(){
+                $(this).attr("src", $(this).attr("src"));
+            });
+        </script>
+    </body>
+</html>
