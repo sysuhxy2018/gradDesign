@@ -218,7 +218,7 @@
                     fdata.append("title", title);
                     fdata.append("reply", reply);
                     $.ajax({
-                        url:"{:url('discuss/forum/posttopics',['fid'=>'201601004'])}",
+                        url:"{:url('discuss/forum/posttopics',['fid'=>$fid])}",
                         type:"POST",
                         data:fdata,
                         processData:false,
