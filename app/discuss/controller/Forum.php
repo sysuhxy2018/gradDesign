@@ -27,6 +27,7 @@ class Forum extends Controller
         }])->where('cid','=',$fid)->paginate($num_per_page);
         
         $this->assign('list', $artList);
+        $this->assign('fid', $fid);
         $this->assign('exp', $this->printExp());
         return $this->fetch('mainForum');
     }
