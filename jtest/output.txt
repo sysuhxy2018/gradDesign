@@ -1,2 +1,0 @@
-max is 5
-number 0
